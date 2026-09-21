@@ -243,7 +243,7 @@ struct SelectUserView: View {
     @ViewBuilder
     private var connectToServerView: some View {
         VStack(spacing: 50) {
-            Text(L10n.connectToJellyfinServerStart)
+            Text("Preparing Markhor IPTV media login")
                 .font(.body)
                 .frame(minWidth: 50, maxWidth: 500)
                 .multilineTextAlignment(.center)
@@ -255,7 +255,7 @@ struct SelectUserView: View {
                     .font(.callout)
                     .fontWeight(.bold)
                     .frame(width: 400, height: 75)
-                    .background(Color.jellyfinPurple)
+                    .background(MarkhorTheme.accent)
             }
             .buttonStyle(.card)
         }
@@ -328,6 +328,7 @@ struct SelectUserView: View {
         .onNotification(.didConnectToServer) { server in
             viewModel.getServers()
             serverSelection = .server(id: server.id)
+            router.route(to: .userSignIn(server: server))
         }
         .onNotification(.didChangeCurrentServerURL) { _ in
             viewModel.getServers()
