@@ -10,7 +10,7 @@ import Foundation
 
 class Fastfile: LaneFile {
     
-    private let swiftfinBundleIdentifier = "org.jellyfin.swiftfin"
+    private let markhorBundleIdentifier = "com.markhor.iptv"
     private let swiftfinXcodeProject = "Swiftfin.xcodeproj"
     
     // MARK: TestFlight
@@ -68,7 +68,7 @@ class Fastfile: LaneFile {
             useAutomaticSigning: false,
             codeSignIdentity: .userDefined(decodedCodeSignIdentity),
             profileName: .userDefined(profileName),
-            bundleIdentifier: .userDefined(swiftfinBundleIdentifier)
+            bundleIdentifier: .userDefined(markhorBundleIdentifier)
         )
         
         if let version = options["version"] {
