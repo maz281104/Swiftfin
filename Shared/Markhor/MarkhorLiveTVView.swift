@@ -335,6 +335,9 @@ struct MarkhorLiveTVView: View {
     @StateObject
     private var playerProxy = VLCVideoPlayer.Proxy()
 
+    @State
+    private var isPaused = false
+
     init(
         credentials: MarkhorXCCredentials,
         onBack: @escaping () -> Void
@@ -566,7 +569,10 @@ struct MarkhorLiveTVView: View {
                 Task { @MainActor in
                     switch state {
                     case .playing:
+                        isPaused = false
                         model.playerDidStartPlaying()
+                    case .paused:
+                        isPaused = true
                     case .error:
                         model.playerFailed()
                     default:
@@ -601,11 +607,12 @@ struct MarkhorLiveTVView: View {
             }
         }
         .onPlayPauseCommand {
-            if playerProxy.mediaPlayer?.isPlaying == true {
-                playerProxy.pause()
-            } else {
+            if isPaused {
                 playerProxy.play()
+            } else {
+                playerProxy.pause()
             }
+            isPaused.toggle()
         }
         #else
         .contentShape(Rectangle())
