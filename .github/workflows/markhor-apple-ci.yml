@@ -24,6 +24,11 @@ jobs:
           xcodebuild -version
           swift --version
 
+      - name: Allow Swift package macros and plugins in CI
+        run: |
+          defaults write com.apple.dt.Xcode IDESkipMacroFingerprintValidation -bool YES
+          defaults write com.apple.dt.Xcode IDESkipPackagePluginFingerprintValidation -bool YES
+
       - name: Install build tools
         run: |
           brew list swiftgen >/dev/null 2>&1 || brew install swiftgen
