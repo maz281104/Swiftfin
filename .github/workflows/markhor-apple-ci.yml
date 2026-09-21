@@ -8,7 +8,7 @@ on:
 
 jobs:
   simulator-builds:
-    name: "iOS/iPadOS + tvOS simulator build"
+    name: "iOS/iPadOS + tvOS simulators + iPad IPA"
     runs-on: macos-15
     timeout-minutes: 90
 
@@ -46,6 +46,17 @@ jobs:
 
       - name: Build iOS and tvOS simulators
         run: sh Scripts/Markhor/build-simulators.sh
+
+      - name: Build unsigned iPadOS IPA
+        run: sh Scripts/Markhor/build-ios-device-ipa.sh
+
+      - name: Upload iPadOS IPA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Markhor-IPTV-iPadOS-unsigned
+          path: artifacts/Markhor-IPTV-iPadOS-unsigned.ipa
+          if-no-files-found: error
+          retention-days: 14
 
       - name: Show working tree after build
         if: always()
