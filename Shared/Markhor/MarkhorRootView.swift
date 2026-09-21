@@ -126,27 +126,21 @@ private struct MarkhorXCLoginView: View {
 
     var body: some View {
         ZStack {
-            LinearGradient(
-                colors: [
-                    MarkhorTheme.background,
-                    Color(red: 9 / 255, green: 38 / 255, blue: 27 / 255),
-                    .black,
-                ],
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            .ignoresSafeArea()
+            MarkhorBrandedBackground()
 
             ScrollView {
                 VStack(spacing: 20) {
-                    Image("markhor-app-icon")
+                    Image("markhor-header-emblem")
                         .resizable()
                         .scaledToFit()
-                        .frame(width: 150, height: 150)
+                        .frame(width: 160, height: 160)
 
-                    Text("MARKHOR IPTV")
-                        .font(.system(size: 31, weight: .black, design: .rounded))
-                        .foregroundStyle(MarkhorTheme.accent)
+                    Image("markhor-wordmark")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: 360)
+                        .frame(height: 94)
+                        .padding(.top, -10)
 
                     Text("Sign in to Markhor IPTV")
                         .font(.title2)
@@ -256,23 +250,23 @@ private struct MarkhorHomeView: View {
 
     var body: some View {
         ZStack {
-            LinearGradient(
-                colors: [
-                    Color.black,
-                    MarkhorTheme.background,
-                    Color(red: 9 / 255, green: 38 / 255, blue: 27 / 255),
-                ],
-                startPoint: .top,
-                endPoint: .bottom
-            )
-            .ignoresSafeArea()
+            MarkhorBrandedBackground()
 
             ScrollView {
                 VStack(spacing: 26) {
-                    Image("markhor-app-icon")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 118, height: 118)
+                    VStack(spacing: 0) {
+                        Image("markhor-header-emblem")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 128, height: 128)
+
+                        Image("markhor-wordmark")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(maxWidth: 300)
+                            .frame(height: 76)
+                            .padding(.top, -12)
+                    }
 
                     LazyVGrid(columns: columns, spacing: 16) {
                         ForEach(MarkhorHomeModule.allCases, id: \.title) { module in
@@ -329,6 +323,38 @@ private struct MarkhorHomeView: View {
                 .padding(30)
             }
         }
+    }
+}
+
+private struct MarkhorBrandedBackground: View {
+
+    var body: some View {
+        GeometryReader { proxy in
+            Image(
+                proxy.size.height > proxy.size.width
+                    ? "markhor-background-portrait"
+                    : "markhor-background-landscape"
+            )
+            .resizable()
+            .scaledToFill()
+            .frame(
+                width: proxy.size.width,
+                height: proxy.size.height
+            )
+            .clipped()
+            .overlay(
+                LinearGradient(
+                    colors: [
+                        Color.black.opacity(0.35),
+                        MarkhorTheme.background.opacity(0.58),
+                        Color.black.opacity(0.72),
+                    ],
+                    startPoint: .top,
+                    endPoint: .bottom
+                )
+            )
+        }
+        .ignoresSafeArea()
     }
 }
 
