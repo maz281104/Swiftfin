@@ -145,7 +145,7 @@ struct UserSignInView: View {
             .textInputAutocapitalization(.never)
             .focused($focusedTextField, equals: .password)
         } header: {
-            Text(L10n.signInToServer(viewModel.server.name))
+            Text("Sign in to Markhor IPTV")
         } footer: {
             switch accessPolicy {
             case .requireDeviceAuthentication:
@@ -174,26 +174,13 @@ struct UserSignInView: View {
             .frame(maxHeight: 75)
             .disabled(username.isEmpty)
             .foregroundStyle(
-                Color.jellyfinPurple.overlayColor,
-                Color.jellyfinPurple
+                MarkhorTheme.accent.overlayColor,
+                MarkhorTheme.accent
             )
             .opacity(username.isEmpty ? 0.5 : 1)
         }
 
-        if viewModel.isQuickConnectEnabled {
-            Section {
-                ListRowButton(
-                    L10n.quickConnect,
-                    action: runQuickConnect
-                )
-                .frame(maxHeight: 75)
-                .disabled(viewModel.state == .signingIn)
-                .foregroundStyle(
-                    Color.jellyfinPurple.overlayColor,
-                    Color.jellyfinPurple
-                )
-            }
-        }
+
 
         if let disclaimer = viewModel.serverDisclaimer {
             Section(L10n.disclaimer) {
@@ -253,8 +240,6 @@ struct UserSignInView: View {
         #if os(iOS)
         List {
             signInSection
-
-            publicUsersSection
         }
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarCloseButton(disabled: viewModel.state == .signingIn) {
@@ -281,7 +266,15 @@ struct UserSignInView: View {
         ) {
             signInSection
         } trailingContentView: {
-            publicUsersSection
+            VStack(spacing: 18) {
+                Image(systemName: "play.tv.fill")
+                    .font(.system(size: 78))
+                    .foregroundStyle(MarkhorTheme.accent)
+
+                Text(MarkhorConfiguration.appName)
+                    .font(.title2)
+                    .fontWeight(.bold)
+            }
         }
         #endif
     }
@@ -290,12 +283,11 @@ struct UserSignInView: View {
 
     var body: some View {
         contentView
-            .navigationTitle(L10n.signIn.localizedCapitalized)
+            .navigationTitle(MarkhorConfiguration.appName)
             .interactiveDismissDisabled(viewModel.state == .signingIn)
             .onReceive(viewModel.events, perform: handleEvent)
             .onFirstAppear {
                 focusedTextField = .username
-                viewModel.getPublicData()
             }
             .alert(
                 L10n.duplicateUser,
