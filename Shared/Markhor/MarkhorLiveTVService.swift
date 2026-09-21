@@ -147,11 +147,11 @@ struct MarkhorXCClient: Sendable {
     ) -> [URL] {
         let generatedTS = generatedStreamURL(
             streamID: channel.id,
-            extension: "ts"
+            streamExtension: "ts"
         )
         let generatedHLS = generatedStreamURL(
             streamID: channel.id,
-            extension: "m3u8"
+            streamExtension: "m3u8"
         )
         let generatedRaw = generatedRawStreamURL(streamID: channel.id)
         let direct = URL(string: channel.directSource)
@@ -221,7 +221,7 @@ struct MarkhorXCClient: Sendable {
 
     private func generatedStreamURL(
         streamID: String,
-        extension streamExtension: String
+        streamExtension: String
     ) -> URL? {
         URL(
             string: "http://192.168.40.2:8011/live/"
