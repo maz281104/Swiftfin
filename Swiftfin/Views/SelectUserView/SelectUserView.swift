@@ -257,25 +257,29 @@ struct SelectUserView: View {
 
     @ViewBuilder
     private var padGridContentView: some View {
-        if userItems.isEmpty {
-            CenteredLazyVGrid(
-                data: [0],
-                id: \.self,
-                minimum: 150,
-                maximum: 300,
-                spacing: EdgeInsets.edgePadding
-            ) { _ in
-                addUserGridButtonView
+        VStack(spacing: EdgeInsets.edgePadding) {
+            if userItems.isNotEmpty {
+                CenteredLazyVGrid(
+                    data: userItems,
+                    id: \.user.id,
+                    minimum: 150,
+                    maximum: 300,
+                    spacing: EdgeInsets.edgePadding,
+                    content: userGridItemView
+                )
             }
-        } else {
-            CenteredLazyVGrid(
-                data: userItems,
-                id: \.user.id,
-                minimum: 150,
-                maximum: 300,
-                spacing: EdgeInsets.edgePadding,
-                content: userGridItemView
-            )
+
+            if !isEditingUsers {
+                CenteredLazyVGrid(
+                    data: [0],
+                    id: \.self,
+                    minimum: 150,
+                    maximum: 300,
+                    spacing: EdgeInsets.edgePadding
+                ) { _ in
+                    addUserGridButtonView
+                }
+            }
         }
     }
 
@@ -283,24 +287,28 @@ struct SelectUserView: View {
 
     @ViewBuilder
     private var phoneGridContentView: some View {
-        if userItems.isEmpty {
-            CenteredLazyVGrid(
-                data: [0],
-                id: \.self,
-                columns: 2
-            ) { _ in
-                addUserGridButtonView
+        VStack(spacing: EdgeInsets.edgePadding) {
+            if userItems.isNotEmpty {
+                CenteredLazyVGrid(
+                    data: userItems,
+                    id: \.user.id,
+                    columns: 2,
+                    spacing: EdgeInsets.edgePadding,
+                    content: userGridItemView
+                )
             }
-        } else {
-            CenteredLazyVGrid(
-                data: userItems,
-                id: \.user.id,
-                columns: 2,
-                spacing: EdgeInsets.edgePadding,
-                content: userGridItemView
-            )
-            .edgePadding()
+
+            if !isEditingUsers {
+                CenteredLazyVGrid(
+                    data: [0],
+                    id: \.self,
+                    columns: 2
+                ) { _ in
+                    addUserGridButtonView
+                }
+            }
         }
+        .edgePadding()
     }
 
     // MARK: - List Content View
@@ -309,17 +317,6 @@ struct SelectUserView: View {
     private var listContentView: some View {
         List {
             let userItems = self.userItems
-
-            if userItems.isEmpty {
-                AddUserListRow(
-                    selectedServer: selectedServer,
-                    servers: viewModel.servers.keys,
-                    action: addUserSelected
-                )
-                .listRowBackground(EmptyView())
-                .listRowInsets(.zero)
-                .listRowSeparator(.hidden)
-            }
 
             ForEach(userItems, id: \.user.id) { item in
                 let user = item.user
@@ -354,6 +351,17 @@ struct SelectUserView: View {
             .listRowBackground(EmptyView())
             .listRowInsets(.zero)
             .listRowSeparator(.hidden)
+
+            if !isEditingUsers {
+                AddUserListRow(
+                    selectedServer: selectedServer,
+                    servers: viewModel.servers.keys,
+                    action: addUserSelected
+                )
+                .listRowBackground(EmptyView())
+                .listRowInsets(.zero)
+                .listRowSeparator(.hidden)
+            }
         }
         .listStyle(.plain)
     }
