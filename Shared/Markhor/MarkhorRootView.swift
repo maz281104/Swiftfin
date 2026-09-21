@@ -84,9 +84,7 @@ struct MarkhorRootView: View {
                     }
 
                 case .settings:
-                    MarkhorModulePlaceholderView(
-                        title: "Settings",
-                        message: "Markhor IPTV Apple settings",
+                    MarkhorSettingsView(
                         onBack: { route = .home }
                     )
                 }
