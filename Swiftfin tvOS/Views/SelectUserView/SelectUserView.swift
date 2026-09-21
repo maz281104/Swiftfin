@@ -286,7 +286,7 @@ struct SelectUserView: View {
             }
         }
         .ignoresSafeArea()
-        .navigationBarBranding()
+        .navigationTitle(MarkhorConfiguration.appName)
         .onAppear {
             viewModel.getServers()
         }
