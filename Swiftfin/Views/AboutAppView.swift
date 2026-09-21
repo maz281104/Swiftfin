@@ -15,14 +15,16 @@ struct AboutAppView: View {
             Section {
                 VStack(alignment: .center, spacing: 10) {
 
-                    Image(.jellyfinBlobBlue)
+                    Image("markhor-header-emblem")
                         .resizable()
-                        .aspectRatio(1, contentMode: .fit)
-                        .frame(height: 150)
+                        .scaledToFit()
+                        .frame(height: 140)
 
-                    Text(verbatim: "Swiftfin")
-                        .fontWeight(.semibold)
-                        .font(.title2)
+                    Image("markhor-wordmark")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: 260)
+                        .frame(height: 68)
                 }
                 .frame(maxWidth: .infinity)
                 .listRowBackground(Color.clear)
@@ -40,7 +42,9 @@ struct AboutAppView: View {
                     image: .logoGithub,
                     external: true
                 ) {
-                    UIApplication.shared.open(.swiftfinGithub)
+                    if let url = URL(string: "https://github.com/maz281104/Swiftfin") {
+                        UIApplication.shared.open(url)
+                    }
                 }
 
                 ChevronButton(
@@ -48,7 +52,9 @@ struct AboutAppView: View {
                     systemName: "plus.circle.fill",
                     external: true
                 ) {
-                    UIApplication.shared.open(.swiftfinGithubIssues)
+                    if let url = URL(string: "https://github.com/maz281104/Swiftfin/issues") {
+                        UIApplication.shared.open(url)
+                    }
                 }
                 .symbolRenderingMode(.monochrome)
 
