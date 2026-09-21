@@ -3,11 +3,17 @@ set -eu
 
 ROOT="${SRCROOT:-$(cd "$(dirname "$0")/../.." && pwd)}"
 SOURCE="$ROOT/Shared/Markhor/Assets/markhor-app-icon.png"
+EMBLEM_SOURCE="$ROOT/Shared/Markhor/Assets/markhor-header-emblem.webp"
+WORDMARK_SOURCE="$ROOT/Shared/Markhor/Assets/markhor-wordmark.webp"
+BACKGROUND_LANDSCAPE_SOURCE="$ROOT/Shared/Markhor/Assets/markhor-background-landscape.webp"
+BACKGROUND_PORTRAIT_SOURCE="$ROOT/Shared/Markhor/Assets/markhor-background-portrait.webp"
 
-if [ ! -f "$SOURCE" ]; then
-  echo "error: Markhor source icon not found: $SOURCE"
-  exit 1
-fi
+for REQUIRED in "$SOURCE" "$EMBLEM_SOURCE" "$WORDMARK_SOURCE" "$BACKGROUND_LANDSCAPE_SOURCE" "$BACKGROUND_PORTRAIT_SOURCE"; do
+  if [ ! -f "$REQUIRED" ]; then
+    echo "error: Markhor branding source not found: $REQUIRED"
+    exit 1
+  fi
+done
 
 TMP_DIR="${DERIVED_FILE_DIR:-/tmp}/markhor-branding"
 mkdir -p "$TMP_DIR"
@@ -30,6 +36,21 @@ padded_icon() {
   /usr/bin/sips -s format png -z "$LOGO_SIZE" "$LOGO_SIZE" "$SOURCE" --out "$TEMP" >/dev/null
   /usr/bin/sips --padToHeightWidth "$HEIGHT" "$WIDTH" --padColor 07130E "$TEMP" --out "$OUTPUT" >/dev/null
 }
+
+convert_artwork() {
+  SOURCE_FILE="$1"
+  OUTPUT_FILE="$2"
+  mkdir -p "$(dirname "$OUTPUT_FILE")"
+  /usr/bin/sips -s format png "$SOURCE_FILE" --out "$OUTPUT_FILE" >/dev/null
+}
+
+# Shared Markhor artwork used by iOS/iPadOS and tvOS screens.
+for ASSET_ROOT in "$ROOT/Swiftfin/Resources/Assets.xcassets" "$ROOT/Swiftfin tvOS/Resources/Assets.xcassets"; do
+  convert_artwork "$EMBLEM_SOURCE" "$ASSET_ROOT/markhor-header-emblem.imageset/markhor-header-emblem.png"
+  convert_artwork "$WORDMARK_SOURCE" "$ASSET_ROOT/markhor-wordmark.imageset/markhor-wordmark.png"
+  convert_artwork "$BACKGROUND_LANDSCAPE_SOURCE" "$ASSET_ROOT/markhor-background-landscape.imageset/markhor-background-landscape.png"
+  convert_artwork "$BACKGROUND_PORTRAIT_SOURCE" "$ASSET_ROOT/markhor-background-portrait.imageset/markhor-background-portrait.png"
+done
 
 # iOS / iPadOS App Store icon
 square_icon 1024 "$ROOT/Swiftfin/Resources/Assets.xcassets/AppIcons/Primary/AppIcon-primary-primary.appiconset/AppIcon-primary-primary.png"
