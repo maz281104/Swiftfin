@@ -43,7 +43,7 @@ extension JellyfinClient.Configuration {
         accessToken: String? = nil
     ) -> Self {
 
-        let client = "Swiftfin \(UIDevice.platform)"
+        let client = "Markhor IPTV \(UIDevice.platform)"
         let deviceName = UIDevice.current.name
             .folding(options: .diacriticInsensitive, locale: .current)
             .unicodeScalars
