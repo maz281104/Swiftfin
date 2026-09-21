@@ -11,7 +11,9 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>$(PRODUCT_NAME)</string>
+	<string>Markhor IPTV</string>
+	<key>CFBundleDisplayName</key>
+	<string>Markhor IPTV</string>
 	<key>CFBundlePackageType</key>
 	<string>$(PRODUCT_BUNDLE_PACKAGE_TYPE)</string>
 	<key>CFBundleShortVersionString</key>
@@ -23,7 +25,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>jellyfin</string>
+				<string>markhoriptv</string>
 			</array>
 		</dict>
 	</array>
@@ -52,7 +54,7 @@
 	<key>NSFaceIDUsageDescription</key>
 	<string>Use FaceID to lock and access local users.</string>
 	<key>NSLocalNetworkUsageDescription</key>
-	<string>${PRODUCT_NAME} uses the local network to connect to your Jellyfin server &amp; discover Cast-enabled devices on your WiFi
+	<string>${PRODUCT_NAME} uses the local network to connect to your Markhor IPTV media server &amp; discover Cast-enabled devices on your WiFi
 network.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>${PRODUCT_NAME} uses microphone access to listen for ultrasonic tokens when pairing with nearby Cast devices.</string>
@@ -72,12 +74,7 @@ network.</string>
 	<key>UIFileSharingEnabled</key>
 	<true/>
 	<key>UILaunchScreen</key>
-	<dict>
-		<key>UIImageName</key>
-		<string>jellyfin-blob-blue</string>
-		<key>UIImageRespectsSafeAreaInsets</key>
-		<true/>
-	</dict>
+	<dict/>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
