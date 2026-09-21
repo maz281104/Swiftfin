@@ -204,7 +204,7 @@ struct MarkhorSettingsView: View {
                             .foregroundStyle(
                                 updateModel.updateAvailable
                                     ? MarkhorTheme.accent
-                                    : .secondary
+                                    : Color.gray
                             )
                     }
 
