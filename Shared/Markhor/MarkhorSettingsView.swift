@@ -133,6 +133,9 @@ struct MarkhorSettingsView: View {
     @State
     private var showAdvancedSettings = false
 
+    @State
+    private var showJellyfinUsers = false
+
     private var hasJellyfinSession: Bool {
         Container.shared.currentUserSession() != nil
     }
@@ -164,6 +167,16 @@ struct MarkhorSettingsView: View {
                 }
 
                 Section("JELLYFIN") {
+                    Button {
+                        showJellyfinUsers = true
+                    } label: {
+                        Label("Add / Switch Jellyfin User", systemImage: "person.crop.circle.badge.plus")
+                    }
+
+                    Text("You can save more than one Jellyfin ID on this device and switch between them.")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+
                     Button("Advanced Player & Jellyfin Settings") {
                         showAdvancedSettings = true
                     }
@@ -232,6 +245,11 @@ struct MarkhorSettingsView: View {
                     Button(action: onBack) {
                         Label("Home", systemImage: "chevron.left")
                     }
+                }
+            }
+            .sheet(isPresented: $showJellyfinUsers) {
+                NavigationInjectionView(coordinator: .init()) {
+                    SelectUserView()
                 }
             }
             .sheet(isPresented: $showAdvancedSettings) {
