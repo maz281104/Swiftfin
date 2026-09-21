@@ -59,7 +59,11 @@ final class MarkhorLiveTVModel: ObservableObject {
             let loaded = try await client.liveCategories()
             categories = loaded
 
-            guard let first = restoredCategory(from: loaded) ?? loaded.first else {
+            let shouldResume = UserDefaults.standard.object(
+                forKey: "markhor.apple.live.resumeLast"
+            ) as? Bool ?? true
+
+            guard let first = (shouldResume ? restoredCategory(from: loaded) : nil) ?? loaded.first else {
                 selectedCategory = nil
                 channels = []
                 errorMessage = "No Live TV categories are available."
@@ -67,7 +71,7 @@ final class MarkhorLiveTVModel: ObservableObject {
                 return
             }
 
-            await selectCategory(first, restoreLastChannel: true)
+            await selectCategory(first, restoreLastChannel: shouldResume)
         } catch let error as MarkhorLiveTVError {
             errorMessage = error.message
         } catch {
@@ -343,6 +347,12 @@ struct MarkhorLiveTVView: View {
 
     @State
     private var selectedAudioTrackIndex: Int = -1
+
+    @AppStorage("markhor.apple.live.aspectFill")
+    private var liveAspectFill = false
+
+    @AppStorage("markhor.apple.live.networkCachingMs")
+    private var liveNetworkCachingMs = 1500
 
     init(
         credentials: MarkhorXCCredentials,
@@ -646,11 +656,11 @@ struct MarkhorLiveTVView: View {
     ) -> VLCVideoPlayer.Configuration {
         var configuration = VLCVideoPlayer.Configuration(url: url)
         configuration.autoPlay = true
-        configuration.aspectFill = false
+        configuration.aspectFill = liveAspectFill
         configuration.audioIndex = .auto
         configuration.subtitleIndex = .absolute(-1)
         configuration.options = [
-            "network-caching": 1500,
+            "network-caching": liveNetworkCachingMs,
             "http-user-agent": "Mozilla/5.0",
         ]
         return configuration
