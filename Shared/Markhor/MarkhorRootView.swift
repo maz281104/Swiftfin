@@ -68,11 +68,18 @@ struct MarkhorRootView: View {
                     }
 
                 case .liveTV:
-                    MarkhorModulePlaceholderView(
-                        title: "Live TV",
-                        message: "XC Live TV module",
-                        onBack: { route = .home }
-                    )
+                    if let credentials = xcSession.credentials {
+                        MarkhorLiveTVView(
+                            credentials: credentials,
+                            onBack: { route = .home }
+                        )
+                    } else {
+                        MarkhorModulePlaceholderView(
+                            title: "Live TV",
+                            message: "Please sign in to Markhor IPTV again.",
+                            onBack: { route = .home }
+                        )
+                    }
 
                 case .settings:
                     MarkhorModulePlaceholderView(
