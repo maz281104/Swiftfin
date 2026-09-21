@@ -25,10 +25,17 @@ struct SettingsView: View {
     var body: some View {
         SplitFormWindowView()
             .descriptionView {
-                Image(.jellyfinBlobBlue)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(maxWidth: 400)
+                VStack(spacing: 10) {
+                    Image("markhor-header-emblem")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: 260)
+
+                    Image("markhor-wordmark")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(maxWidth: 360)
+                }
             }
             .contentView {
                 Section(L10n.jellyfin) {
