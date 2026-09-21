@@ -580,7 +580,6 @@ struct MarkhorLiveTVView: View {
                 configuration: playerConfiguration(url: url)
             )
             .proxy(playerProxy)
-            .id(model.playbackIdentity)
             .onStateUpdated { state, info in
                 Task { @MainActor in
                     audioTracks = info.audioTracks
@@ -598,6 +597,7 @@ struct MarkhorLiveTVView: View {
                     }
                 }
             }
+            .id(model.playbackIdentity)
             .ignoresSafeArea()
 
             playbackControlsOverlay
