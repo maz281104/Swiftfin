@@ -377,7 +377,7 @@ struct MarkhorLiveTVView: View {
 
             if model.isLoading {
                 ProgressView()
-                    .controlSize(.large)
+                    .scaleEffect(1.35)
                     .padding(24)
                     .background(.ultraThinMaterial)
                     .clipShape(RoundedRectangle(cornerRadius: 18))
