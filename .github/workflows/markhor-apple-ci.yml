@@ -1,0 +1,47 @@
+name: "Markhor Apple CI"
+
+on:
+  push:
+    branches:
+      - markhor-apple-dev
+  workflow_dispatch:
+
+jobs:
+  simulator-builds:
+    name: "iOS/iPadOS + tvOS simulator build"
+    runs-on: macos-15
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select Xcode 16.4
+        run: sudo xcode-select -s /Applications/Xcode_16.4.app/Contents/Developer
+
+      - name: Show toolchain
+        run: |
+          xcodebuild -version
+          swift --version
+
+      - name: Install build tools
+        run: |
+          brew list swiftgen >/dev/null 2>&1 || brew install swiftgen
+          brew list swiftformat >/dev/null 2>&1 || brew install swiftformat
+          brew list carthage >/dev/null 2>&1 || brew install carthage
+
+      - name: Build Carthage dependencies
+        run: carthage update --use-xcframeworks --cache-builds
+
+      - name: Generate Markhor assets
+        run: sh Scripts/Markhor/GenerateMarkhorAssets.sh
+
+      - name: Resolve Swift packages
+        run: xcodebuild -resolvePackageDependencies -project Swiftfin.xcodeproj
+
+      - name: Build iOS and tvOS simulators
+        run: sh Scripts/Markhor/build-simulators.sh
+
+      - name: Show working tree after build
+        if: always()
+        run: git status --short
