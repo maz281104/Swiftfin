@@ -186,6 +186,9 @@ private struct MarkhorXCLoginView: View {
                 .background(
                     RoundedRectangle(cornerRadius: 22)
                         .fill(MarkhorTheme.panel.opacity(0.93))
+                )
+                .overlay(
+                    RoundedRectangle(cornerRadius: 22)
                         .stroke(MarkhorTheme.accent.opacity(0.35), lineWidth: 1)
                 )
                 .padding(30)
@@ -296,6 +299,9 @@ private struct MarkhorHomeView: View {
                                 .background(
                                     RoundedRectangle(cornerRadius: 18)
                                         .fill(MarkhorTheme.panel.opacity(0.9))
+                                )
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 18)
                                         .stroke(MarkhorTheme.accent.opacity(0.35), lineWidth: 1)
                                 )
                             }
