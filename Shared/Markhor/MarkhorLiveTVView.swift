@@ -338,6 +338,12 @@ struct MarkhorLiveTVView: View {
     @State
     private var isPaused = false
 
+    @State
+    private var audioTracks: [VLCVideoPlayer.MediaTrack] = []
+
+    @State
+    private var selectedAudioTrackIndex: Int = -1
+
     init(
         credentials: MarkhorXCCredentials,
         onBack: @escaping () -> Void
@@ -565,8 +571,10 @@ struct MarkhorLiveTVView: View {
             )
             .proxy(playerProxy)
             .id(model.playbackIdentity)
-            .onStateUpdated { state, _ in
+            .onStateUpdated { state, info in
                 Task { @MainActor in
+                    audioTracks = info.audioTracks
+                    selectedAudioTrackIndex = info.currentAudioTrack.index
                     switch state {
                     case .playing:
                         isPaused = false
@@ -670,6 +678,28 @@ struct MarkhorLiveTVView: View {
                     }
                     .buttonStyle(.borderedProminent)
                     .tint(MarkhorTheme.panel)
+
+                    if !audioTracks.isEmpty {
+                        Menu {
+                            ForEach(audioTracks, id: \.index) { track in
+                                Button {
+                                    playerProxy.setAudioTrack(.absolute(track.index))
+                                    selectedAudioTrackIndex = track.index
+                                } label: {
+                                    Label(
+                                        track.title,
+                                        systemImage: selectedAudioTrackIndex == track.index
+                                            ? "checkmark.circle.fill"
+                                            : "circle"
+                                    )
+                                }
+                            }
+                        } label: {
+                            Label("Audio", systemImage: "speaker.wave.2.fill")
+                        }
+                        .buttonStyle(.borderedProminent)
+                        .tint(MarkhorTheme.panel)
+                    }
 
                     Spacer()
                 }
