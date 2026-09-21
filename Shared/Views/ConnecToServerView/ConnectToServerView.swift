@@ -29,7 +29,7 @@ struct ConnectToServerView: View {
     @State
     private var isPresentingDuplicateServer: Bool = false
     @State
-    private var url: String = ""
+    private var url: String = MarkhorConfiguration.jellyfinServerURL.absoluteString
 
     private let timer = Timer.publish(every: 12, on: .main, in: .common).autoconnect()
 
@@ -48,12 +48,9 @@ struct ConnectToServerView: View {
 
     @ViewBuilder
     private var connectSection: some View {
-        Section(L10n.connectToServer) {
-            TextField(L10n.serverURL, text: $url)
-                .disableAutocorrection(true)
-                .textInputAutocapitalization(.never)
-                .keyboardType(.URL)
-                .focused($isURLFocused)
+        Section("Markhor IPTV Media Server") {
+            Text(MarkhorConfiguration.jellyfinServerURL.absoluteString)
+                .foregroundStyle(.secondary)
         }
 
         if viewModel.state == .connecting {
@@ -102,8 +99,6 @@ struct ConnectToServerView: View {
         #if os(iOS)
         List {
             connectSection
-
-            localServersSection
         }
         .navigationBarTitleDisplayMode(.inline)
         .navigationBarCloseButton(disabled: viewModel.state == .connecting) {
@@ -115,7 +110,15 @@ struct ConnectToServerView: View {
         ) {
             connectSection
         } trailingContentView: {
-            localServersSection
+            VStack(spacing: 18) {
+                Image(systemName: "play.tv.fill")
+                    .font(.system(size: 72))
+                    .foregroundStyle(MarkhorTheme.accent)
+
+                Text(MarkhorConfiguration.appName)
+                    .font(.title2)
+                    .fontWeight(.bold)
+            }
         }
         #endif
     }
@@ -124,15 +127,12 @@ struct ConnectToServerView: View {
 
     var body: some View {
         contentView
-            .navigationTitle(L10n.connect)
+            .navigationTitle(MarkhorConfiguration.appName)
             .interactiveDismissDisabled(viewModel.state == .connecting)
             .onFirstAppear {
-                isURLFocused = true
-                viewModel.searchForServers()
-            }
-            .onReceive(timer) { _ in
-                guard viewModel.state != .connecting else { return }
-                viewModel.searchForServers()
+                if viewModel.state != .connecting {
+                    viewModel.connect(url: MarkhorConfiguration.jellyfinServerURL.absoluteString)
+                }
             }
             .onReceive(viewModel.events, perform: onEvent)
             .onReceive(viewModel.$error) { error in
