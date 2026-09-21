@@ -463,10 +463,10 @@ struct SelectUserView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .principal) {
-                Image(uiImage: .jellyfinBlobBlue)
+                Image("markhor-header-emblem")
                     .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 30)
+                    .scaledToFit()
+                    .frame(width: 34, height: 34)
             }
 
             ToolbarItem(placement: .topBarLeading) {
