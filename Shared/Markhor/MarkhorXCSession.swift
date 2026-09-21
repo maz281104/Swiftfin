@@ -17,6 +17,9 @@ final class MarkhorXCSession: ObservableObject {
 
     private let keychain = KeychainSwift(keyPrefix: "markhor.apple.xc.")
 
+    private var activeUsername = ""
+    private var activePassword = ""
+
     private enum Key {
         static let username = "username"
         static let password = "password"
@@ -46,9 +49,22 @@ final class MarkhorXCSession: ObservableObject {
         }
     }
 
+    var credentials: MarkhorXCCredentials? {
+        guard isSignedIn, !activeUsername.isEmpty, !activePassword.isEmpty else {
+            return nil
+        }
+
+        return MarkhorXCCredentials(
+            username: activeUsername,
+            password: activePassword
+        )
+    }
+
     func signOut() {
         keychain.delete(Key.username)
         keychain.delete(Key.password)
+        activeUsername = ""
+        activePassword = ""
         accountName = ""
         accountExpiry = ""
         errorMessage = ""
@@ -123,6 +139,8 @@ final class MarkhorXCSession: ObservableObject {
                 throw MarkhorXCError.expired
             }
 
+            activeUsername = username
+            activePassword = password
             accountName = username
             accountExpiry = Self.expiryText(expiryEpoch)
             isSignedIn = true
