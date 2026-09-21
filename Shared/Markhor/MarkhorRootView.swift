@@ -58,14 +58,16 @@ struct MarkhorRootView: View {
                     }
 
                 case .movies:
-                    MarkhorEmbeddedSwiftfinView(title: "Movies") {
-                        route = .home
-                    }
+                    MarkhorMediaLibraryView(
+                        section: .movies,
+                        onBack: { route = .home }
+                    )
 
                 case .series:
-                    MarkhorEmbeddedSwiftfinView(title: "Series") {
-                        route = .home
-                    }
+                    MarkhorMediaLibraryView(
+                        section: .series,
+                        onBack: { route = .home }
+                    )
 
                 case .liveTV:
                     if let credentials = xcSession.credentials {
