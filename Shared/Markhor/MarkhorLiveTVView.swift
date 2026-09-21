@@ -343,7 +343,7 @@ struct MarkhorLiveTVView: View {
     private var isPaused = false
 
     @State
-    private var audioTracks: [VLCVideoPlayer.MediaTrack] = []
+    private var audioTracks: [MediaTrack] = []
 
     @State
     private var selectedAudioTrackIndex: Int = -1
