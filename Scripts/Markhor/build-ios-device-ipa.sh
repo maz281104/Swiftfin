@@ -4,7 +4,9 @@ set -eu
 ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 cd "$ROOT"
 
-BUILD_ROOT="$ROOT/build/markhor-ios-device"
+# Keep DerivedData outside the repository so the project's SwiftFormat build
+# phase does not recursively scan Swift Package checkouts inside DerivedData.
+BUILD_ROOT="${RUNNER_TEMP:-/tmp}/markhor-ios-device"
 DERIVED_DATA="$BUILD_ROOT/DerivedData"
 PACKAGE_ROOT="$BUILD_ROOT/package"
 ARTIFACT_DIR="$ROOT/artifacts"
