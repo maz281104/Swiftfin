@@ -1,0 +1,13 @@
+{
+  "images": [
+    {
+      "filename": "markhor-header-emblem.png",
+      "idiom": "universal",
+      "scale": "1x"
+    }
+  ],
+  "info": {
+    "author": "xcode",
+    "version": 1
+  }
+}
